@@ -114,6 +114,14 @@ function getCss(theme: string, fontSize: string) {
         font-size: 0.76em;
     }
     
+    .url {
+        font-family: 'Vera', sans-serif;
+        font-style: normal;
+        color: ${foreground};
+        line-height: 1;
+        font-size: 0.45em;
+    }
+    
     .text p {
         margin:0;
     }`;
@@ -131,6 +139,7 @@ export function getHtml(parsedReq: ParsedRequest) {
     </style>
     <body>
         <div class="container">
+            <div class="url">https://techlingo.fyi</div>
             <div class="heading">${emojify(sanitizeHtml(term))}</div>
             <div class="text">${emojify(sanitizeHtml(text))}</div>
         </div>
