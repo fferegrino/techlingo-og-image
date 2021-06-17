@@ -1,6 +1,5 @@
 
 import { readFileSync } from 'fs';
-import marked from 'marked';
 import { sanitizeHtml } from './sanitizer';
 import { ParsedRequest } from './types';
 const twemoji = require('twemoji');
@@ -49,9 +48,10 @@ function getCss(theme: string, fontSize: string) {
         background-size: 100px 100px;
         height: 100vh;
         display: flex;
-        text-align: center;
+        text-align: left;
         align-items: center;
-        justify-content: center;
+        justify-content: left;
+        padding: 50px;
     }
 
     code {
@@ -77,12 +77,6 @@ function getCss(theme: string, fontSize: string) {
         margin: 0 75px;
     }
 
-    .plus {
-        color: #BBB;
-        font-family: Times New Roman, Verdana;
-        font-size: 100px;
-    }
-
     .spacer {
         margin: 150px;
     }
@@ -94,17 +88,39 @@ function getCss(theme: string, fontSize: string) {
         vertical-align: -0.1em;
     }
     
+    .container {
+    
+        font-size: ${sanitizeHtml(fontSize)};
+    }
+    
     .heading {
         font-family: 'Inter', sans-serif;
-        font-size: ${sanitizeHtml(fontSize)};
         font-style: normal;
+        font-weight: bold;
         color: ${foreground};
         line-height: 1.2;
+        font-size: 1.1em;
+    }
+    
+    .heading p {
+        margin:0;
+    }
+    
+    .text {
+        font-family: 'Inter', sans-serif;
+        font-style: normal;
+        color: ${foreground};
+        line-height: 1;
+        font-size: 0.76em;
+    }
+    
+    .text p {
+        margin:0;
     }`;
 }
 
 export function getHtml(parsedReq: ParsedRequest) {
-    const { text,term, theme, md, fontSize, } = parsedReq;
+    const { text,term, theme, fontSize, } = parsedReq;
     return `<!DOCTYPE html>
 <html>
     <meta charset="utf-8">
@@ -114,17 +130,9 @@ export function getHtml(parsedReq: ParsedRequest) {
         ${getCss(theme, fontSize)}
     </style>
     <body>
-        <div>
-            <div class="spacer">
-            <div class="spacer">
-            <div class="heading">${emojify(
-                md ? marked(term) : sanitizeHtml(term)
-            )}
-            </div>
-            <div class="heading">${emojify(
-                md ? marked(text) : sanitizeHtml(text)
-            )}
-            </div>
+        <div class="container">
+            <div class="heading">${emojify(sanitizeHtml(term))}</div>
+            <div class="text">${emojify(sanitizeHtml(text))}</div>
         </div>
     </body>
 </html>`;
